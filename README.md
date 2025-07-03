@@ -1,93 +1,64 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Credit Card Fraud Detection</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 40px;
-            background-color: #f4f4f9;
-            color: #333;
-            line-height: 1.6;
-        }
-        h1, h2, h3 {
-            color: #2c3e50;
-        }
-        .section {
-            margin-bottom: 30px;
-            padding: 20px;
-            background-color: white;
-            border-left: 6px solid #3498db;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-        ul {
-            padding-left: 20px;
-        }
-        a {
-            color: #2980b9;
-            text-decoration: none;
-        }
-        a:hover {
-            text-decoration: underline;
-        }
-    </style>
-</head>
-<body>
+# 🧠 Credit Card Fraud Detection
 
-    <h1>🧠 Credit Card Fraud Detection</h1>
+## 🎯 Objective
+To analyze credit card transactions and develop machine learning models that accurately detect fraudulent transactions.
 
-    <div class="section">
-        <h2>🎯 Objective</h2>
-        <p>To analyze credit card transactions and develop machine learning models that accurately detect fraudulent transactions.</p>
-    </div>
+---
 
-    <div class="section">
-        <h2>📌 Overview</h2>
-        <p>
-            Credit card fraud detection involves identifying unauthorized or suspicious activities using stolen or compromised card information.
-            Financial institutions rely on advanced fraud detection systems to protect customers and minimize financial loss.
-        </p>
-        <p>
-            Dataset Source:
-            <a href="https://www.kaggle.com/datasets/mlg-ulb/creditcardfraud/data" target="_blank">
-                Kaggle - Credit Card Fraud Detection
-            </a>
-        </p>
-    </div>
+## 📌 Overview
+Credit card fraud detection involves identifying unauthorized or suspicious activities using stolen or compromised card information.  
+Financial institutions rely on advanced fraud detection systems to protect customers and minimize financial loss.
 
-    <div class="section">
-        <h2>🛠️ Libraries Used</h2>
-        <ul>
-            <li>NumPy – Numerical computation</li>
-            <li>Pandas – Data manipulation and analysis</li>
-            <li>Seaborn & Matplotlib – Data visualization</li>
-            <li>Scikit-learn – Machine learning and model evaluation</li>
-        </ul>
-    </div>
+**Dataset Source:**  
+[Kaggle - Credit Card Fraud Detection](https://www.kaggle.com/datasets/mlg-ulb/creditcardfraud/data)
 
-    <div class="section">
-        <h2>🏗️ Project Workflow</h2>
-        <ol>
-            <li><strong>Data Collection & Cleaning:</strong> Data sourced from Kaggle. Cleaned by removing irrelevant columns.</li>
-            <li><strong>Exploratory Data Analysis (EDA):</strong> Visualized distributions and identified patterns.</li>
-            <li><strong>Handling Imbalanced Data:</strong> Used SMOTE, over-sampling, and under-sampling techniques.</li>
-            <li><strong>Data Splitting:</strong> Split data into training and testing sets.</li>
-            <li><strong>Model Training:</strong> Trained Logistic Regression, Random Forest, and Decision Tree classifiers.</li>
-            <li><strong>Model Evaluation:</strong> Metrics used: F1-score, Accuracy, Precision, and Recall.</li>
-            <li><strong>Result Visualization:</strong> Plotted confusion matrix, ROC curves, and precision-recall curves.</li>
-        </ol>
-    </div>
+---
 
-    <div class="section">
-        <h2>📈 Business Impact & Use Case</h2>
-        <p>
-            Traditional rule-based fraud detection systems often result in <strong>high false positive rates</strong>, flagging legitimate transactions.
-        </p>
-        <p>
-            Machine Learning models reduce false positives by <strong>learning individual customer behavior patterns</strong>, resulting in smarter fraud detection with <strong>lower customer friction</strong>.
-        </p>
-    </div>
+## 🛠️ Libraries Used
+- **NumPy** – Numerical computation  
+- **Pandas** – Data manipulation and analysis  
+- **Seaborn** – Data visualization  
+- **Matplotlib** – Data visualization  
+- **Scikit-learn** – Machine learning and model evaluation  
 
-</body>
-</html>
+---
+
+## 🏗️ Project Workflow
+
+1. **Data Collection & Cleaning**  
+   - Data sourced from Kaggle  
+   - Cleaned by removing irrelevant or redundant columns  
+
+2. **Exploratory Data Analysis (EDA)**  
+   - Visualized transaction distributions and feature correlations  
+   - Identified trends and patterns between fraudulent and normal transactions  
+
+3. **Handling Imbalanced Data**  
+   - Dataset is highly imbalanced (fraudulent vs. non-fraudulent)  
+   - Applied **SMOTE (Synthetic Minority Oversampling Technique)**  
+   - Tried **under-sampling** and **over-sampling** approaches  
+
+4. **Data Splitting**  
+   - Split into training and test sets (e.g., 80-20 split)  
+
+5. **Model Training**  
+   - Logistic Regression  
+   - Random Forest Classifier  
+   - Decision Tree Classifier  
+
+6. **Model Evaluation**  
+   - Metrics: **F1-score**, **Accuracy**, **Precision**, **Recall**  
+   - Compared model performances to select the best performer  
+
+7. **Result Visualization**  
+   - Confusion matrix  
+   - ROC Curve  
+   - Precision-Recall curve  
+
+---
+
+## 📈 Business Impact & Use Case
+
+- Traditional rule-based fraud detection often results in **high false positives**, blocking legitimate transactions (e.g., customer traveling abroad).
+- ML models learn **individual behavior patterns**, improving fraud detection accuracy and **reducing false positives**.
+
