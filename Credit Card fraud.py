@@ -1,163 +1,93 @@
-# Import the Library
+# -------------------- Import Libraries --------------------
 import pandas as pd
 import numpy as np
-from sklearn.metrics import accuracy_score, recall_score, precision_score, f1_score
-
-
-# Import the Dataset
-Dataset = pd.read_csv('creditcard.csv')
-pd.options.display.max_columns = None
-print("----------------------------Top 5 Feature--------------------------\n",Dataset.head())
-print("----------------------------Last 5 Feature--------------------------\n",Dataset.tail())
-# Understand the Dataset and Handle the data set
-
-print(Dataset.shape) #(284807, 31)
-print("Number of Rows", Dataset.shape[0]) #284807
-print("number of columns", Dataset.shape[1]) #31
-print(Dataset.info())
-print("Missing Val", Dataset.isnull().sum())
+from sklearn.metrics import accuracy_score, recall_score, precision_score, f1_score, roc_curve, auc, precision_recall_curve
 from sklearn.preprocessing import StandardScaler
-sc =  StandardScaler()
-Dataset['Amount'] = sc.fit_transform(pd.DataFrame(Dataset['Amount']))
-print("----------------------------After Standard Scaler--------------------------\n",Dataset.head())
-Dataset = Dataset.drop('Time', axis=1)
-print(Dataset.shape) #(284807, 30)
-print(Dataset.duplicated().any()) #True
-Dataset = Dataset.drop_duplicates()
-print("After deleting Duplicate values", Dataset.shape) #(275663, 30)
-# EDA on imTarget Variable
-print(Dataset['Class'].value_counts())
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LogisticRegression
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.ensemble import RandomForestClassifier
+from imblearn.over_sampling import SMOTE
 import matplotlib.pyplot as plt
 import seaborn as sns
-sns.countplot(x ='Class', data= Dataset)
-plt.show()
-print("--------------------------------------Handle imbalance dataset----------------------------------------------")
-# balance the imbalnance dataset with under and over sampling
-# 1- UnderSampling the Dataset
-normal = Dataset[Dataset['Class'] == 0]
-print(normal.shape)
-fraud = Dataset[Dataset['Class'] == 1]
-print(fraud.shape)
-normal_sample = normal.sample(n=473)
-print(normal_sample.shape)
-new_data = pd.concat([normal_sample, fraud], ignore_index= True)
-print(new_data['Class'].value_counts())
-print(new_data.head())
-# UnderSampling the Dataset
-# Split the dataset in train and test
-print("--------------------------------------Split dataset into Target and ind----------------------------------------------")
-X = new_data.iloc[:, :-1].values
-print(X)
-y = new_data.iloc[:, -1].values
-print(y)
-# ------------------------------------split data into training and test--------------------------------------------
-from sklearn.model_selection import train_test_split
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size= 0.2, random_state= 42)
-print("------------------------------------Training the Model--------------------------------------------")
-print("------------------------------------Logistic Regression--------------------------------------------")
-# Import Ml model to dataset
-from sklearn.linear_model import LogisticRegression
-lr = LogisticRegression()
-lr.fit(X_train, y_train)
-y_pred = lr.predict(X_test)
-print(accuracy_score(y_test, y_pred))
-print(recall_score(y_test, y_pred))
-print(precision_score(y_test, y_pred))
-print(f1_score(y_test, y_pred))
-
-print("------------------------------------DecisionTreeClassifier--------------------------------------------")
-from sklearn.tree import DecisionTreeClassifier
-tree = DecisionTreeClassifier()
-tree.fit(X_train, y_train)
-y_pred1 = tree.predict(X_test)
-print(accuracy_score(y_test, y_pred1))
-print(recall_score(y_test, y_pred1))
-print(precision_score(y_test, y_pred1))
-print(f1_score(y_test, y_pred1))
-
-print("------------------------------------RandomForestClassifier--------------------------------------------")
-from sklearn.ensemble import RandomForestClassifier
-rrc = RandomForestClassifier()
-rrc.fit(X_train, y_train)
-y_pred3 = rrc.predict(X_test)
-print(accuracy_score(y_test, y_pred3))
-print(recall_score(y_test, y_pred3))
-print(precision_score(y_test, y_pred3))
-print(f1_score(y_test, y_pred3))
-
-print("------------------------------------Analyse Which model is best in undersampling--------------------------------------------")
-
-obs = pd.DataFrame({'Model': ["LogisticRegression", "DecisionTreeClassifier", "RandomForestClassifier"],
-       'Acc': [accuracy_score(y_test, y_pred)*100, accuracy_score(y_test, y_pred1)*100, accuracy_score(y_test, y_pred3)*100]})
-print(obs.head())
-sns.barplot(x='Model', y='Acc', data= obs)
-plt.show()
-
-
-print("------------------------------------Over Sampling--------------------------------------------")
-X = Dataset.iloc[:, :-1].values
-print(X.shape)
-y = Dataset.iloc[:, -1].values
-print(y.shape)
-
-from imblearn.over_sampling import SMOTE
-sm = SMOTE()
-X_res, y_res = sm.fit_resample(X, y)
-print(X_res.shape)
-print(y_res.shape)
-
-from sklearn.model_selection import train_test_split
-X_train, X_test, y_train, y_test = train_test_split(X_res, y_res, test_size= 0.2, random_state= 42)
-
-from sklearn.linear_model import LogisticRegression
-lr1 = LogisticRegression()
-lr1.fit(X_train, y_train)
-y_pred = lr1.predict(X_test)
-print(accuracy_score(y_test, y_pred))
-print(recall_score(y_test, y_pred))
-print(precision_score(y_test, y_pred))
-print(f1_score(y_test, y_pred))
-
-print("------------------------------------DecisionTreeClassifier--------------------------------------------")
-from sklearn.tree import DecisionTreeClassifier
-tree1 = DecisionTreeClassifier()
-tree1.fit(X_train, y_train)
-y_pred1 = tree1.predict(X_test)
-print(accuracy_score(y_test, y_pred1))
-print(recall_score(y_test, y_pred1))
-print(precision_score(y_test, y_pred1))
-print(f1_score(y_test, y_pred1))
-
-print("------------------------------------RandomForestClassifier--------------------------------------------")
-from sklearn.ensemble import RandomForestClassifier
-rrc1 = RandomForestClassifier()
-rrc1.fit(X_train, y_train)
-y_pred3 = rrc1.predict(X_test)
-print(accuracy_score(y_test, y_pred3))
-print(recall_score(y_test, y_pred3))
-print(precision_score(y_test, y_pred3))
-print(f1_score(y_test, y_pred3))
-
-print("------------------------------------Analyse Which model is best in Over Sampling--------------------------------------------")
-obs1 = pd.DataFrame({'Model': ["LogisticRegression", "DecisionTreeClassifier", "RandomForestClassifier"],
-       'Acc': [accuracy_score(y_test, y_pred)*100, accuracy_score(y_test, y_pred1)*100, accuracy_score(y_test, y_pred3)*100]})
-
-print(obs1.head())
-sns.barplot(x='Model', y='Acc', data= obs1)
-plt.show()
-
-
-rf = RandomForestClassifier()
-rf.fit(X_res, y_res)
 import joblib
 
-joblib.dump(rf, 'Credit_card_fraud_detect')
-model = joblib.load('Credit_card_fraud_detect')
-predd = model.predict([[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]])
+# -------------------- Load and Preprocess Dataset --------------------
+Dataset = pd.read_csv('creditcard.csv')
+pd.options.display.max_columns = None
 
-if predd == 1:
-  print("Fraud")
-else:
-  print("Normal")
+# Standardize 'Amount' and drop 'Time'
+sc = StandardScaler()
+Dataset['Amount'] = sc.fit_transform(pd.DataFrame(Dataset['Amount']))
+Dataset.drop('Time', axis=1, inplace=True)
 
+# Remove duplicates
+Dataset.drop_duplicates(inplace=True)
 
+# -------------------- Under Sampling --------------------
+normal = Dataset[Dataset['Class'] == 0]
+fraud = Dataset[Dataset['Class'] == 1]
+normal_sample = normal.sample(n=len(fraud))
+under_data = pd.concat([normal_sample, fraud], ignore_index=True)
+
+X_under = under_data.drop('Class', axis=1).values
+y_under = under_data['Class'].values
+
+X_train_u, X_test_u, y_train_u, y_test_u = train_test_split(X_under, y_under, test_size=0.2, random_state=42)
+
+# -------------------- Over Sampling with SMOTE --------------------
+X = Dataset.drop('Class', axis=1).values
+y = Dataset['Class'].values
+
+sm = SMOTE(random_state=42)
+X_res, y_res = sm.fit_resample(X, y)
+
+X_train_o, X_test_o, y_train_o, y_test_o = train_test_split(X_res, y_res, test_size=0.2, random_state=42)
+
+# -------------------- Train Model (RandomForest) on Over Sampled Data --------------------
+rf = RandomForestClassifier(random_state=42)
+rf.fit(X_train_o, y_train_o)
+y_pred = rf.predict(X_test_o)
+y_prob = rf.predict_proba(X_test_o)[:, 1]
+
+# -------------------- Evaluation Metrics --------------------
+print("Accuracy:", accuracy_score(y_test_o, y_pred))
+print("Recall:", recall_score(y_test_o, y_pred))
+print("Precision:", precision_score(y_test_o, y_pred))
+print("F1 Score:", f1_score(y_test_o, y_pred))
+
+# -------------------- Save Model --------------------
+joblib.dump(rf, 'Credit_card_fraud_detect.pkl')
+
+# -------------------- ROC Curve --------------------
+fpr, tpr, _ = roc_curve(y_test_o, y_prob)
+roc_auc = auc(fpr, tpr)
+
+plt.figure(figsize=(8,6))
+plt.plot(fpr, tpr, label='ROC Curve (AUC = {:.2f})'.format(roc_auc), color='darkorange')
+plt.plot([0, 1], [0, 1], 'k--', lw=2)
+plt.title('ROC Curve - Random Forest')
+plt.xlabel('False Positive Rate')
+plt.ylabel('True Positive Rate')
+plt.legend(loc='lower right')
+plt.grid(True)
+plt.show()
+
+# -------------------- Precision-Recall Curve --------------------
+precision, recall, _ = precision_recall_curve(y_test_o, y_prob)
+
+plt.figure(figsize=(8,6))
+plt.plot(recall, precision, label='Precision-Recall Curve', color='blue')
+plt.title('Precision-Recall Curve - Random Forest')
+plt.xlabel('Recall')
+plt.ylabel('Precision')
+plt.grid(True)
+plt.legend()
+plt.show()
+
+# -------------------- Prediction Example --------------------
+model = joblib.load('Credit_card_fraud_detect.pkl')
+sample_input = np.array([[1]*29])
+prediction = model.predict(sample_input)
+
+print("Prediction:", "Fraud" if prediction[0] == 1 else "Normal")
